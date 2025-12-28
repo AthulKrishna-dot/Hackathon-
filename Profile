@@ -1,0 +1,10 @@
+class ProfileAgent:
+    def analyze_profile(self, user_profile):
+        """
+        Analyze user's education, skills, and interests
+        """
+        return {
+            "skills": user_profile.get("skills", []),
+            "interests": user_profile.get("interests", []),
+            "education": user_profile.get("education", "")
+        }
