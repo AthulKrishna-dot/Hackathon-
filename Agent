@@ -1,0 +1,83 @@
+class SkillGapAgent:
+    def find_skill_gap(self, user_skills, required_skills):
+        """
+        Compare user skills with industry-required skills
+        """
+        missing_skills = list(set(required_skills) - set(user_skills))
+        return missing_skills
+
+# agents/market_agent.py
+
+class MarketIntelligenceAgent:
+    def get_trending_roles(self):
+        """
+        Simulated job market trends
+        """
+        return {
+            "AI Engineer": ["Python", "ML", "Deep Learning"],
+            "Data Scientist": ["Python", "Statistics", "SQL"],
+            "ML Engineer": ["Python", "MLOps", "TensorFlow"]
+        }
+
+# agents/learning_path_agent.py
+
+class LearningPathAgent:
+    def generate_learning_path(self, missing_skills):
+        """
+        Generate step-by-step learning plan
+        """
+        learning_path = []
+        for skill in missing_skills:
+            learning_path.append(f"Learn {skill}")
+        return learning_path
+
+# agents/memory_agent.py
+
+class MemoryAgent:
+    def __init__(self):
+        self.memory = {}
+
+    def store(self, user_id, data):
+        self.memory[user_id] = data
+
+    def retrieve(self, user_id):
+        return self.memory.get(user_id, {})
+
+# orchestrator.py
+
+from agents.profile_agent import ProfileAgent
+from agents.skill_gap_agent import SkillGapAgent
+from agents.market_agent import MarketIntelligenceAgent
+from agents.learning_path_agent import LearningPathAgent
+from agents.memory_agent import MemoryAgent
+
+class AgentOrchestrator:
+    def __init__(self):
+        self.profile_agent = ProfileAgent()
+        self.skill_agent = SkillGapAgent()
+        self.market_agent = MarketIntelligenceAgent()
+        self.learning_agent = LearningPathAgent()
+        self.memory_agent = MemoryAgent()
+
+    def run(self, user_id, user_profile):
+        profile = self.profile_agent.analyze_profile(user_profile)
+        market_roles = self.market_agent.get_trending_roles()
+
+        chosen_role = list(market_roles.keys())[0]
+        required_skills = market_roles[chosen_role]
+
+        missing_skills = self.skill_agent.find_skill_gap(
+            profile["skills"], required_skills
+        )
+
+        learning_path = self.learning_agent.generate_learning_path(missing_skills)
+
+        self.memory_agent.store(user_id, {
+            "role": chosen_role,
+            "learning_path": learning_path
+        })
+
+        return {
+            "recommended_role": chosen_role,
+            "learning_path": learning_path
+        }
