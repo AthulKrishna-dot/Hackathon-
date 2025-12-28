@@ -1,0 +1,18 @@
+# main.py
+
+from orchestrator import AgentOrchestrator
+
+if __name__ == "__main__":
+    user_profile = {
+        "education": "B.E Electronics and Communication",
+        "skills": ["Python", "Basics of ML"],
+        "interests": ["AI", "Data"]
+    }
+
+    orchestrator = AgentOrchestrator()
+    result = orchestrator.run(user_id="user_001", user_profile=user_profile)
+
+    print("Recommended Career Role:", result["recommended_role"])
+    print("Learning Path:")
+    for step in result["learning_path"]:
+        print("-", step)
